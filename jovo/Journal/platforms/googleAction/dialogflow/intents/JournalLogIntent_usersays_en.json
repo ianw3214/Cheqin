@@ -1,0 +1,14 @@
+[
+	{
+		"data": [
+			{
+				"text": "log",
+				"userDefined": true,
+				"alias": "log",
+				"meta": "@sys.any"
+			}
+		],
+		"isTemplate": false,
+		"count": 0
+	}
+]

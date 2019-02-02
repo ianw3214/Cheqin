@@ -1,0 +1,46 @@
+[
+	{
+		"data": [
+			{
+				"text": "emotion",
+				"userDefined": true,
+				"alias": "emotion",
+				"meta": "@sys.any"
+			}
+		],
+		"isTemplate": false,
+		"count": 0
+	},
+	{
+		"data": [
+			{
+				"text": "it was ",
+				"userDefined": false
+			},
+			{
+				"text": "emotion",
+				"userDefined": true,
+				"alias": "emotion",
+				"meta": "@sys.any"
+			}
+		],
+		"isTemplate": false,
+		"count": 0
+	},
+	{
+		"data": [
+			{
+				"text": "i feel ",
+				"userDefined": false
+			},
+			{
+				"text": "emotion",
+				"userDefined": true,
+				"alias": "emotion",
+				"meta": "@sys.any"
+			}
+		],
+		"isTemplate": false,
+		"count": 0
+	}
+]

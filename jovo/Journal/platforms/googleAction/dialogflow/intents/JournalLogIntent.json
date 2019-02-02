@@ -1,0 +1,17 @@
+{
+	"name": "JournalLogIntent",
+	"auto": true,
+	"webhookUsed": true,
+	"responses": [
+		{
+			"parameters": [
+				{
+					"isList": false,
+					"name": "log",
+					"value": "$log",
+					"dataType": "@sys.any"
+				}
+			]
+		}
+	]
+}

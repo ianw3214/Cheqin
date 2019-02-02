@@ -1,0 +1,10 @@
+{
+	"name": "InitialIntent",
+	"auto": true,
+	"webhookUsed": true,
+	"responses": [
+		{
+			"parameters": []
+		}
+	]
+}

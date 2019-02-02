@@ -1,6 +1,6 @@
 'use strict';
 
-const { Webhook, ExpressJS, Lambda } = require('jovo-framework');
+const { Webhook, ExpressJS, Lambda, GoogleCloudFunction } = require('jovo-framework');
 const { app } = require ('./app.js');
 
 // ------------------------------------------------------------------
@@ -21,7 +21,13 @@ if (process.argv.indexOf('--webhook') > -1) {
     });
 }
 
+/*
 // AWS Lambda
 exports.handler = async (event, context, callback) => {
     await app.handle(new Lambda(event, context, callback));
+};
+*/
+
+exports.handler = async (req, res) => {
+    await app.handle(new GoogleCloudFunction(req, res));
 };

@@ -1,0 +1,17 @@
+{
+	"name": "EmotionLogIntent",
+	"auto": true,
+	"webhookUsed": true,
+	"responses": [
+		{
+			"parameters": [
+				{
+					"isList": false,
+					"name": "emotion",
+					"value": "$emotion",
+					"dataType": "@sys.any"
+				}
+			]
+		}
+	]
+}
