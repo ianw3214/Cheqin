@@ -1,31 +1,20 @@
 
 /**
-* A basic Hello World function
-* @param {string} name Who you're saying hello to
-* @returns {string}
+* Runs the Firestore Authentication 
+* @param {string} settingsPath Path to settings.json
+* @returns {object} 
 */
 
 
-module.exports = async (name = 'world', context) => {
+module.exports = async (settingsPath='../../../../settings.json', context) => {
 
   let admin = require('firebase-admin')
-  let serviceAccount = require('../../../../settings.json')
+  let serviceAccount = require(settingsPath)
   
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: 'https://journalagent-db480.firebaseio.com'
   })
-  
-  const db = admin.firestore()
-  const ref = db.collection('users').doc('Xgmr4rdQvID50asl5MVY')
-  let getDoc = await ref.get()
-    .then(doc => {
-      console.log(doc.data())
-    })
-    .catch(err => {
-      console.log('Error getting document ' + err)
-    })
 
-  return ''
-
+  return admin
 };
