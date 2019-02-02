@@ -40,7 +40,8 @@ app.setHandler({
                 ask('Overall, how would you summarize how you felt in one word?', "Please give me a one word summary of your day");
         },
         JournalLogIntent() {
-            this.ask('Did you do anything else?\n' + this.$inputs.log.value, 'What else did you do today?');
+            this.followUpState('JournalLogState')
+                .ask('Did you do anything else?\n' + this.$inputs.log.value, 'What else did you do today?');
         }
     },
 
