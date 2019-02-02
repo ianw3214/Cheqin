@@ -30,7 +30,6 @@ app.setHandler({
     },
 
     InitialIntent() {
-        // this.ask('Hi, tell me how your day went.', 'Please tell me how your day went.');
         this.followUpState('JournalLogState').
             ask('Welcome back, how was your day?', 'Please tell me about your day.');
     },
@@ -38,10 +37,10 @@ app.setHandler({
     JournalLogState: {
         JournalDoneIntent() {
             this.followUpState('EmotionLogState').
-                ask('Overall, how would you summarize how you felt in one word?\n' + this.$inputs.log.value, "Please give me a one word summary of your day");
+                ask('Overall, how would you summarize how you felt in one word?', "Please give me a one word summary of your day");
         },
         JournalLogIntent() {
-            this.ask('Did you do anything else?', 'What else did you do today?');
+            this.ask('Did you do anything else?\n' + this.$inputs.log.value, 'What else did you do today?');
         }
     },
 
