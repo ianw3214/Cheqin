@@ -24,6 +24,7 @@ app.get('/', function(req, res) {
         .then(r => r.json())
         // TODO: Send a success/failure response to the client
         .then(response => {
+            
             // TODO: Store information to firebase
             console.log(response);
         })

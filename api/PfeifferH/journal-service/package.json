@@ -5,6 +5,7 @@
   "author": "PfeifferH <hayden@pfeiffer.ca>",
   "main": "functions/__main__.js",
   "dependencies": {
+    "express": "^4.16.4",
     "firebase-admin": "^7.0.0"
   },
   "private": true,
