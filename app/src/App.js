@@ -10,6 +10,18 @@ import {
   import LoginPage from "./loginPage";
   import TestPage from "./testPage";
 
+  import firebase from "firebase";
+  // Configure Firebase.
+const config = {
+  apiKey: "AIzaSyAu2owEMXHV9UT7QO2oOyjNVNGSHqSfZLE",
+    authDomain: "journalagent-db480.firebaseapp.com",
+    databaseURL: "https://journalagent-db480.firebaseio.com",
+    projectId: "journalagent-db480",
+    storageBucket: "journalagent-db480.appspot.com",
+    messagingSenderId: "472886687367"
+};
+firebase.initializeApp(config);
+
   const appName = "QHacks Journal";
 class App extends Component {
   render() {
