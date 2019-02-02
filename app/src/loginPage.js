@@ -24,8 +24,8 @@ class LoginPage extends Component {
       if (!this.props.isSignedIn) {
         return (
           <div>
-            <h1>Sign in to {this.props.appName}</h1>
-            <p>Journal and reflect on your day using the Google Assistant.</p>
+            <h2>Sign in to {this.props.appName}</h2>
+            <h4>Journal and reflect on your day using the Google Assistant.</h4>
             <p>Encourage more self reflection, promote the expression of emotions and monitor mental wellbeing over time</p>
             <StyledFirebaseAuth uiConfig={this.uiConfig} firebaseAuth={firebase.auth()}/>
           </div>

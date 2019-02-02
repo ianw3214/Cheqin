@@ -9,7 +9,7 @@ import {
   } from "react-router-dom";
   import HomePage from "./homePage";
   import LoginPage from "./loginPage";
-  import TestPage from "./testPage";
+  import JournalEntries from "./journalEntries";
 
   import firebase from "firebase";
   // Configure Firebase.
@@ -31,8 +31,8 @@ class App extends Component {
     componentDidMount() {
       this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
           (user) => {
-            this.setState({isSignedIn: !!user})
             this.onAuthStateChanged(firebase.auth().currentUser);
+            this.setState({isSignedIn: !!user, isLoaded: true})
           }
       );
     }
@@ -45,7 +45,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.onAuthStateChanged = this.onAuthStateChanged.bind(this);
-    this.state = {isSignedIn: false, authUser: {}, userName: "Not signed in", userPhoto: null}
+    this.state = {isLoaded: false, isSignedIn: false, authUser: {}, userName: "Not signed in", userPhoto: null}
   }
 
   onAuthStateChanged(authUser){
@@ -58,6 +58,7 @@ class App extends Component {
   }
 
   render() {
+    if(this.state.isLoaded){
       return (
         <HashRouter>
           <div className="container-scroller App">
@@ -92,7 +93,7 @@ class App extends Component {
                     </div>
                   </div>
                   <div className="preview-item-content">
-                    <h6 className="preview-subject font-weight-medium text-dark">AHHHHHHH</h6>
+                    <h6 className="preview-subject font-weight-medium text-dark">Welcome to Daily Cheqin</h6>
                     <p className="font-weight-light small-text">
                       Just now
                     </p>
@@ -133,9 +134,9 @@ class App extends Component {
                 </NavLink>
             </li>
             <li className="nav-item">
-            <NavLink className="nav-link" to="/test">
+            <NavLink className="nav-link" to="/journal">
                 <i className="menu-icon mdi mdi-content-copy"></i>
-                <span className="menu-title">My Journal Entries</span>
+                <span className="menu-title">Journal Entries</span>
               </NavLink>
             </li>
             <li className="nav-item">
@@ -159,7 +160,7 @@ class App extends Component {
         <div className="main-panel">
           <div className="content-wrapper content">
                 <Route exact path="/" render={(routeProps) => (<HomePage appName={appName}  isSignedIn={this.state.isSignedIn}/>)}/>
-                <Route path="/test" render={(routeProps) => (<TestPage appName={appName}  />)}/>
+                <Route path="/journal" render={(routeProps) => (<JournalEntries appName={appName}  />)}/>
                 <Route path="/login" render={(routeProps) => (<LoginPage appName={appName} isSignedIn={this.state.isSignedIn} />)}/>
           </div>
           <footer className="footer">
@@ -175,7 +176,16 @@ class App extends Component {
         </HashRouter>
       );
     
+  }else{
+    return (
+      <div className="container-scroller App">
+        <div className="progress">
+          <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={{width: '100%'}}></div>
+        </div>
+      </div>
+    );
   }
+}
 }
 
 
