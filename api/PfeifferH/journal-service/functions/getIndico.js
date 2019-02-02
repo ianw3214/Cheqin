@@ -9,14 +9,12 @@ app.get('/', function(req, res) {
     var input_data = "";
     req.on('data', (chunk) => {
         input_data += chunk;
-        // console.log('data');
     });
 
     req.on('end', ()=>{
-        console.log(input_data.text);
-        console.log('======');
+        input_data = JSON.parse(input_data);
 
-        fetch('https://apiv2.indico.io/places', {
+        fetch('https://apiv2.indico.io/emotion', {
             method: 'POST',
             body: JSON.stringify({
                 api_key: '3deac03d4a4ed32e154aa18e4742fecf',
@@ -41,17 +39,10 @@ app.post('/', function (req, res) {
     var input_data = "";
     req.on('data', (chunk) => {
         input_data += chunk;
-        // console.log('data');
     });
 
     req.on('end', ()=>{
-        //console.log(input_data);
-        //console.log('======');
         input_data = JSON.parse(input_data);
-        //console.log(input_data);
-        //console.log('======');
-        //console.log(input_data.text);
-        //console.log('======');
 
         fetch('https://apiv2.indico.io/emotion', {
             method: 'POST',
