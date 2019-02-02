@@ -7,6 +7,15 @@
 			"inputs": []
 		},
 		{
+			"name": "JournalDoneIntent",
+			"phrases": [
+				"no",
+				"not really",
+				"that's all"
+			],
+			"inputs": []
+		},
+		{
 			"name": "JournalLogIntent",
 			"phrases": [
 				"{log}"
@@ -35,6 +44,17 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "AppDoneIntent",
+			"phrases": [
+				"that's it",
+				"not really",
+				"that's all",
+				"nope",
+				"no"
+			],
+			"inputs": []
 		}
 	],
 	"alexa": {
