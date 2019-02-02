@@ -4,7 +4,9 @@
   "description": "",
   "author": "PfeifferH <hayden@pfeiffer.ca>",
   "main": "functions/__main__.js",
-  "dependencies": {},
+  "dependencies": {
+    "firebase-admin": "^7.0.0"
+  },
   "private": true,
   "stdlib": {
     "build": "faaslang",
