@@ -53,15 +53,19 @@ app.post('/', function (req, res) {
             })
         })
         .then(r => r.json())
-        // TODO: Send a success/failure response to the client
         .then(response => {
+            // Send a success response to the client
+            res.status(200).json({status:"ok"})
             // TODO: Store information to firebase
             console.log(response);
         })
-        .catch(err => console.log(err));
+        // Send a failure response to the client
+        .catch(err => {
+            res.status(500).json({status:err})
+        });
     });
 
-    res.send("endpost");
+    //res.send("endpost");
 
 });
 
