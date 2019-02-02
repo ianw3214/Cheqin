@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import LoginPage from "./loginPage";
  
 class HomePage extends Component {
   render() {
@@ -10,7 +11,7 @@ class HomePage extends Component {
 
         <h3>Our mission</h3>
         <p>Encourage more self reflection, promote the expression of emotions and monitor mental wellbeing over time.</p>
-      </div>
+        </div>
     );
   }
 }

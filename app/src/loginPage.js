@@ -1,18 +1,15 @@
 import React, { Component } from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase";
+import {Redirect} from "react-router-dom";
   
 class LoginPage extends Component {
 
-    // The component's Local state.
-    state = {
-      isSignedIn: false // Local signed-in state.
-    };
   
     // Configure FirebaseUI.
     uiConfig = {
       // Popup signin flow rather than redirect flow.
-      signInFlow: 'popup',
+      signInFlow: 'redirect',
       // We will display Google and Facebook as auth providers.
       signInOptions: [
         firebase.auth.GoogleAuthProvider.PROVIDER_ID
@@ -23,34 +20,19 @@ class LoginPage extends Component {
       }
     };
   
-    // Listen to the Firebase Auth state and set the local state.
-    componentDidMount() {
-      this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
-          (user) => this.setState({isSignedIn: !!user})
-      );
-    }
-    
-    // Make sure we un-register Firebase observers when the component unmounts.
-    componentWillUnmount() {
-      this.unregisterAuthObserver();
-    }
-  
     render() {
-      if (!this.state.isSignedIn) {
+      if (!this.props.isSignedIn) {
         return (
           <div>
-            <h1>My App</h1>
-            <p>Please sign-in:</p>
+            <h1>Sign in to {this.props.appName}</h1>
+            <p>Journal and reflect on your day using the Google Assistant.</p>
+            <p>Encourage more self reflection, promote the expression of emotions and monitor mental wellbeing over time</p>
             <StyledFirebaseAuth uiConfig={this.uiConfig} firebaseAuth={firebase.auth()}/>
           </div>
         );
       }
       return (
-        <div>
-          <h1>My App</h1>
-          <p>Welcome {firebase.auth().currentUser.displayName}! You are now signed-in!</p>
-          <a onClick={() => firebase.auth().signOut()}>Sign-out</a>
-        </div>
+        <Redirect to='/' />
       );
     }
   }
