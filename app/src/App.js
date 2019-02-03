@@ -20,12 +20,12 @@ class App extends Component {
     return(<div className="container-scroller App">
     <nav className="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div className="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
-        {/*<a className="navbar-brand brand-logo" href="index.html">
-          <img src="images/logo.svg" alt="logo" />
+        <a className="navbar-brand brand-logo" href="index.html">
+          <img src="images/logo_small.png" alt="logo" />
         </a>
         <a className="navbar-brand brand-logo-mini" href="index.html">
-          <img src="images/logo-mini.svg" alt="logo" />
-        </a>*/}
+          <img src="images/logo_small.svg" alt="logo" />
+        </a>
       </div>
       {
           this.props.auth.isAuthenticated() && (<>

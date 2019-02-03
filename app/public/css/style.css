@@ -13876,11 +13876,12 @@ input:focus {
   -moz-transition: background 0.25s ease;
   -ms-transition: background 0.25s ease; }
   .navbar.default-layout .navbar-brand-wrapper {
+    background: linear-gradient(90deg, #65499c, #65499c);
     transition: width 0.25s ease, background 0.25s ease;
     -webkit-transition: width 0.25s ease, background 0.25s ease;
     -moz-transition: width 0.25s ease, background 0.25s ease;
     -ms-transition: width 0.25s ease, background 0.25s ease;
-    background: #ffffff;
+
     width: 255px;
     height: 63px; }
     .sidebar-dark .navbar.default-layout .navbar-brand-wrapper {
@@ -13896,9 +13897,10 @@ input:focus {
       .navbar.default-layout .navbar-brand-wrapper .navbar-brand:active, .navbar.default-layout .navbar-brand-wrapper .navbar-brand:focus, .navbar.default-layout .navbar-brand-wrapper .navbar-brand:hover {
         color: #424546; }
       .navbar.default-layout .navbar-brand-wrapper .navbar-brand img {
-        width: calc(255px - 130px);
+        /*width: calc(255px - 130px);*/
+        width:40px;
         max-width: 100%;
-        height: 28px;
+        height: 40px;
         margin: auto;
         vertical-align: middle; }
     .navbar.default-layout .navbar-brand-wrapper .brand-logo-mini {
