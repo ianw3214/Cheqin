@@ -51,8 +51,8 @@ module.exports = async (sessionId='', userToken='', userId=null, text='', emotio
   if(emotions != null && Object.keys(emotionsObject).length !== 5) {
     throw new Error('Error: length of emotions array does not match schema')
   }
- 
-  let data = emotions !== null ? { emotions: emotionsObject, text: text } : { text: text } //Set emotions if inputted
+  const time = Math.floor(Date.now() / 1000);
+  let data = emotions !== null ? { emotions: emotionsObject, text: text, entry: time } : { text: text, entry: time } //Set emotions if inputted
   
   await ref.set(data, { merge: true })
 

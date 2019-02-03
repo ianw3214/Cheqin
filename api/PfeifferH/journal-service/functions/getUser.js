@@ -11,7 +11,6 @@ let serviceAccount = {
 }
 
 
-
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: 'https://journalagent-db480.firebaseio.com'

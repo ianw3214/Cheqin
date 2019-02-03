@@ -7,7 +7,7 @@
 
 let admin = require('firebase-admin')
 let serviceAccount = {
-  
+ //Credential keys go here
 }
 
 admin.initializeApp({
