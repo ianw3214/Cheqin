@@ -17,7 +17,7 @@ let serviceAccount = {
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://journalagent-db480.firebaseio.com'
+  databaseURL: "https://daily-cheqin.firebaseio.com"
 })
 
 module.exports = async (sessionId='', userToken='', userId=null, text='', emotions=null, context) => {
@@ -51,9 +51,10 @@ module.exports = async (sessionId='', userToken='', userId=null, text='', emotio
   if(emotions != null && Object.keys(emotionsObject).length !== 5) {
     throw new Error('Error: length of emotions array does not match schema')
   }
+
   const time = Math.floor(Date.now() / 1000);
   let data = emotions !== null ? { emotions: emotionsObject, text: text, entry: time } : { text: text, entry: time } //Set emotions if inputted
-  
+ 
   await ref.set(data, { merge: true })
 
 }

@@ -1,6 +1,6 @@
 {
   "name": "daily-cheqin-voice-app",
-  "version": "1.00",
+  "version": "1.0.0",
   "description": "Voice app for online journals",
   "main": "index.js",
   "dependencies": {
