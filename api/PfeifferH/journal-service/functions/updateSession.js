@@ -39,7 +39,7 @@ module.exports = async (sessionId='', userToken='', userId=null, text='', emotio
   }
 
   const db = admin.firestore()
-  console.log("fired")
+ 
   if(!sessionId) {
     await db.collection('users/' + userId + '/sessions/').add({})
     .then(doc => {
@@ -51,7 +51,7 @@ module.exports = async (sessionId='', userToken='', userId=null, text='', emotio
   if(emotions != null && Object.keys(emotionsObject).length !== 5) {
     throw new Error('Error: length of emotions array does not match schema')
   }
-  console.log("fired2")
+ 
   let data = emotions !== null ? { emotions: emotionsObject, text: text } : { text: text } //Set emotions if inputted
   
   await ref.set(data, { merge: true })
