@@ -4,6 +4,16 @@ class JournalEntries extends Component {
     constructor(props) {
         super(props);
         this.state = {entries:[]}
+        let idToken = "abcd";
+        fetch("https://pfeifferh.lib.id/journal-service@dev/getSessions/?userId=FFYOkVqrfebqih4m6ZyI")
+        .then(response => {
+            response.text().then((text) => {
+                let data = JSON.parse(text);
+                
+                this.setState({entries:data, userToken: idToken});
+                // do something with the text response 
+              });
+        });
         /*firebase.auth().currentUser.getIdToken(true).then(async (idToken) => {
             console.log(idToken);
             fetch("https://pfeifferh.lib.id/journal-service@dev/getSessions/?userToken="+idToken)
@@ -47,7 +57,7 @@ class JournalCard extends Component {
   }
 
   updateText() {
-    fetch("https://pfeifferh.lib.id/journal-service@dev/updateSession/?userToken=" + this.props.userToken + "&sessionId=" + this.props.entry[0] + "&text=" + this.state.text)
+    fetch("https://pfeifferh.lib.id/journal-service@dev/updateSession/?userId=FFYOkVqrfebqih4m6ZyI&sessionId=" + this.props.entry[0] + "&text=" + this.state.text)
       .then().catch(err => console.log(err));
 
     this.setState({ editing: false })

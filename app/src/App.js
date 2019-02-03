@@ -24,7 +24,7 @@ class App extends Component {
           <img src="images/logo_small.png" alt="logo" />
         </a>
         <a className="navbar-brand brand-logo-mini" href="index.html">
-          <img src="images/logo_small.svg" alt="logo" />
+          <img src="images/logo_small.png" alt="logo" />
         </a>
       </div>
       {
