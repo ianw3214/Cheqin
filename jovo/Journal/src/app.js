@@ -17,6 +17,7 @@ const {
     FileDb
 } = require('jovo-db-filedb');
 const rp = require('request-promise');
+const fetch = require("node-fetch");
 
 const app = new App();
 
@@ -49,18 +50,34 @@ app.setHandler({
     
     JournalLogState: {
         JournalDoneIntent() {
-            this.followUpState('JournalLogState.EmotionLogState').
+            this.followUpState('EmotionLogState').
             ask('Overall, how would you summarize how you felt in one word?', "Please give me a one word summary of your day");
         },
         JournalLogIntent() {
             this.$session.$data.transcript = this.$session.$data.transcript + this.$inputs.log.value;
             this.followUpState('JournalLogState')
-                .ask('Did you do anything else?\n' + this.$session.$data.transcript, 'What else did you do today?');
-        },
+                .ask('Did you do anything else?'/* + this.$session.$data.transcript*/, 'What else did you do today?');
+        }
 
-        EmotionLogState: {
-            EmotionLogIntent() {
-                this.tell("Ok, thanks!");
+    },
+
+    EmotionLogState: {
+        EmotionLogIntent() {
+            this.tell("Ok, thanks!");
+
+            let emo64 = {};
+            fetch('https://apiv2.indico.io/emotion', {
+                method: 'POST',
+                body: JSON.stringify({
+                    api_key: 'e8ed0c055e13d18183a1513838645d8a',
+                    data: this.$session.$data.transcript
+                })
+            })
+            .then(r => r.json())
+            .then(response => {
+                console.log(response.results);
+                let emojson = JSON.stringify(response.results);
+                emo64 = Buffer.from(emojson).toString("base64");
 
                 let options = {
                     method: 'GET',
@@ -68,7 +85,7 @@ app.setHandler({
                     qs: {
                         'userId': 'FFYOkVqrfebqih4m6ZyI',
                         'text': this.$session.$data.transcript,
-                        'emotions': [ 0.1, 0.1, 0.1, 0.1, 0.1 ]
+                        'emotions': emo64
                     }
                 };
 
@@ -79,51 +96,11 @@ app.setHandler({
                     .catch(function (err) {
                         // Do nothing as well...
                     });
-                /*
-                this.$session.$data.summary = this.$inputs.emotion.value;
-                this.tell('Alright, got it. Thanks for sharing!');
+            })
+            // Send a failure response to the client
+            .catch(err => console.log(err));
+            // this.$inputs.emotion.value <- FOR THE INPUT
 
-                admin.auth().verifyIdToken(user.getAccessToken())
-                    .then((decodedToken) => {
-                        console.log("Token decoded");
-                        uid = decodedToken.uid;
-                        console.log("Decode: " + uid);
-                        return admin.firestore().collection('users/' + 'FFYOkVqrfebqih4m6ZyI' + '/sessions').add({
-                            tokenRefreshTime: FieldValue.serverTimestamp(),
-                            date: this.getTimestamp,
-                            text: this.$session.$data.transcript,
-                            summary: this.$session.$data.summary
-                        }).then((document) => {
-                            console.log("Document saved at " + 'users/' + uid + '/sessions' + document.id);
-                            return 0;
-                        }).catch((e) => {
-                            console.log(e);
-                            return e;
-                        });
-                        // ...
-                    }).catch((error) => {
-                        // Handle error
-                        console.log(error);
-                        return error;
-                    });
-                    
-                admin.firestore().collection('users/' + 'FFYOkVqrfebqih4m6ZyI' + '/sessions')
-                    .add({tokenRefreshTime: FieldValue.serverTimestamp(),
-                        date: "Feb 3, 2019",
-                        text: this.$session.$data.transcript,
-                        summary: this.$session.$data.summary
-                    }).then((document) => {
-                        console.log("Document saved at " + 'users/' + uid + '/sessions' + document.id);
-                        return 0;
-                    }).catch((e) => {
-                        console.log(e);
-                        return e;
-                    });
-                    */
-
-                // this.$inputs.emotion.value <- FOR THE INPUT
-
-            }
         }
     }
 
