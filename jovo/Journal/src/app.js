@@ -47,19 +47,8 @@ app.setHandler({
 
     EmotionLogState: {
         EmotionLogIntent() {
-            this.followUpState('ContinueQueryState')
-                .ask('Alright, got it. Is there anything else you want to talk about?');
+            this.tell('Alright, got it. Thanks for sharing!');
             // this.$inputs.emotion.value <- FOR THE INPUT
-        }
-    },
-
-    ContinueQueryState: {
-        AppDoneIntent() {
-            this.tell("Goodnight, thanks for sharing!");
-        },
-        AppContinueIntent() {
-            this.followUpState('JournalLogState').
-                ask('Did you do anything else?', 'What else did you do today?');
         }
     }
 
