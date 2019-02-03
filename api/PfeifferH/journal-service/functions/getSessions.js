@@ -1,8 +1,7 @@
-
 /**
-* Retrieves a user's global attributes
+* Retrieves an array of the user's sessions
 * @param {string} userToken user token to validate
-* @returns {object} Document Data
+* @returns {Array} Document Data
 */
 
 let admin = require('firebase-admin')
@@ -23,21 +22,22 @@ module.exports = async (userToken='', context) => {
     userId = decodedToken.uid;  
   }).catch((error) => {
     console.log('Error: Unauthorized user token')
+    return
   });
-
+  console.log(userId)
   const db = admin.firestore()
-  const ref = db.collection('users').doc(userId)
-
-
-  let data = {}
-  await ref.get()
-    .then(doc => {
-      data = doc.data()
+  console.log('users/'+userId+'/sessions')
+  let query = db.collection('users/'+userId+'/sessions');
+ 
+  return query.get()
+    .then(snapshot => {
+      let data = [];
+      snapshot.forEach(session => {
+        data.push([session.id, session.data()])
+      })
+      return data
     })
     .catch(err => {
-      console.log('Error getting document ' + err)
-      return null
+      return 'Error: ' + err
     })
-  
-  if(data) return data
 };

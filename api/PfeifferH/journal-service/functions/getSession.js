@@ -1,25 +1,33 @@
 /**
 * Retrieves a user's session data
-* @param {string} userId 
 * @param {string} sessionId Doc Id to retrieve
-* @param {string} settingsPath 
+* @param {string} userToken User token to verify
 * @returns {object} Document Data
 */
 
+let admin = require('firebase-admin')
+let serviceAccount = {
+  
+}
 
-module.exports = async (userId, sessionId, settingsPath='../../../../settings.json', context) => {
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://journalagent-db480.firebaseio.com'
+})
+
+module.exports = async (sessionId='', userToken, context) => {
   
-  let admin = require('firebase-admin')
-  let serviceAccount = require(settingsPath)
-  
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: 'https://journalagent-db480.firebaseio.com'
-  })
+  let userId = ''
+  await admin.auth().verifyIdToken(userToken)
+  .then((decodedToken) => {
+    userId = decodedToken.uid;  
+  }).catch((error) => {
+    console.log('Error: Unauthorized user token')
+    return
+  });
 
   const db = admin.firestore()
   const ref = db.collection('users/' + userId + '/sessions').doc(sessionId)
-
 
   let data = {}
   await ref.get()
