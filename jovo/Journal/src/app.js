@@ -38,70 +38,15 @@ app.use(
 app.setHandler({
     LAUNCH() {
         this.$session.$data.transcript = "";
-        this.$session.$data.summary = "";
-        this.$session.$data.name = "";
-        // Transition to next state based on whether access token is available
-        if (!this.$request.getAccessToken()) {
-            this.showAccountLinkingCard();
-        } else {
-            this.toIntent('InitialIntent');
-        }
+        this.toIntent('InitialIntent');
     },
-    ON_SIGN_IN() {
-        if (this.$googleAction.getSignInStatus() === 'CANCELLED') {
-            this.tell("User account link cancelled...");
-        } else if (this.$googleAction.getSignInStatus() === 'OK') {
-            let token = this.$request.getAccessToken();
-            let options = {
-                method: 'GET',
-                uri: 'https://cheqin.auth0.com/userinfo', // You can find your URL on Client --> Settings --> 
-                // Advanced Settings --> Endpoints --> OAuth User Info URL
-                headers: {
-                    authorization: 'Bearer ' + token,
-                }
-            };
 
-            await rp(options).then((body) => {
-                let data = JSON.parse(body);
-                /*
-                To see how the user data was stored,
-                go to Auth -> Users -> Click on the user you authenticated earlier -> Raw JSON
-                */
-                // this.tell(data.name + ', ' + data.email);
-                this.followUpState('JournalLogState')
-                    .ask('Welcome back ' + data.name + ', how was your day?', 'Please tell me about your day.');
-            });
-        } else if (this.$googleAction.getSignInStatus() === 'ERROR') {
-            this.tell("User account link failed...");
-        }
-    },
     InitialIntent() {
+        console.log("INITIAL INTENT GOTTEN TO");
         this.followUpState('JournalLogState')
-            .ask('Welcome back ' + user.getProfile().givenName + ', how was your day?', 'Please tell me about your day.');
+            .ask('Hi, tell me about your day.', 'Please tell me about your day.');
     },
-    /*
-    ON_PERMISSION() {
-        if (this.$googleAction.isPermissionGranted()) {
-            let user = this.$googleAction.$user;
-            console.log(user.getAccessToken());
-            // Check, if you have the necessary permission
-            if (user.hasPermission('NAME')) {
-                console.log("syphilis");
-                console.log(user.getProfile());
-                console.log("asdf");
-                this.$session.$data.name = user.getProfile().givenName;
-                this.followUpState('JournalLogState')
-                    .ask('Welcome back ' + user.getProfile().givenName + ', how was your day?', 'Please tell me about your day.');
-            } else {
-                this.followUpState('JournalLogState')
-                    .tell("Something went v wrong");
-            }
-        } else {
-            this.tell("Sorry, I can't help you bye");
-        }
-    },
-    */
-
+    
     JournalLogState: {
         JournalDoneIntent() {
             this.followUpState('JournalLogState.EmotionLogState').
@@ -115,28 +60,35 @@ app.setHandler({
 
         EmotionLogState: {
             EmotionLogIntent() {
+                this.tell("Ok, thanks!");
+
+                let options = {
+                    method: 'GET',
+                    uri: 'https://pfeifferh.lib.id/journal-service@dev/updateSession/',
+                    qs: {
+                        'userId': 'FFYOkVqrfebqih4m6ZyI',
+                        'text': this.$session.$data.transcript,
+                        'emotions': [ 0.1, 0.1, 0.1, 0.1, 0.1 ]
+                    }
+                };
+
+                rp(options)
+                    .then(function (repos) {
+                        // Do nothing...
+                    })
+                    .catch(function (err) {
+                        // Do nothing as well...
+                    });
+                /*
                 this.$session.$data.summary = this.$inputs.emotion.value;
                 this.tell('Alright, got it. Thanks for sharing!');
 
-                /*
-                var uid = "";
-                console.log("idToken " + this.$user.idToken);
-                console.log("session raw" + this.$request.session)
-                console.log("session keys" + Object.keys(this.$request.session))
-                console.log("session stringify" + JSON.stringify(this.$user))
-                console.log("user raw" + this.$user);
-                console.log("user keys " + Object.keys(this.$user));
-                console.log("user stringify" + JSON.stringify(this.$user));
-                console.log("access tokan" + this.$request.getAccessToken());
-                */
-                //let user = this.$googleAction.$user;
-
-                /*return admin.auth().verifyIdToken(user.getAccessToken())
+                admin.auth().verifyIdToken(user.getAccessToken())
                     .then((decodedToken) => {
                         console.log("Token decoded");
                         uid = decodedToken.uid;
                         console.log("Decode: " + uid);
-                        return admin.firestore().collection('users/' + uid + '/sessions').add({
+                        return admin.firestore().collection('users/' + 'FFYOkVqrfebqih4m6ZyI' + '/sessions').add({
                             tokenRefreshTime: FieldValue.serverTimestamp(),
                             date: this.getTimestamp,
                             text: this.$session.$data.transcript,
@@ -153,11 +105,10 @@ app.setHandler({
                         // Handle error
                         console.log(error);
                         return error;
-                    });*/
+                    });
                     
-                    /*  TODO: (Ian) Implement this
-                    return admin.firestore().collection('users/' + uid + '/sessions').add({
-                        tokenRefreshTime: FieldValue.serverTimestamp(),
+                admin.firestore().collection('users/' + 'FFYOkVqrfebqih4m6ZyI' + '/sessions')
+                    .add({tokenRefreshTime: FieldValue.serverTimestamp(),
                         date: "Feb 3, 2019",
                         text: this.$session.$data.transcript,
                         summary: this.$session.$data.summary
@@ -169,7 +120,6 @@ app.setHandler({
                         return e;
                     });
                     */
-
 
                 // this.$inputs.emotion.value <- FOR THE INPUT
 

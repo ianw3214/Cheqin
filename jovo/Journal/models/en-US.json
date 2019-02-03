@@ -1,10 +1,19 @@
 {
-	"invocation": "my test app",
+	"invocation": "daily cheqin",
 	"intents": [
 		{
 			"name": "InitialIntent",
-			"phrases": [],
-			"inputs": []
+			"phrases": [
+				"{any}"
+			],
+			"inputs": [
+				{
+					"name": "any",
+					"type": {
+						"dialogflow": "@sys.any"
+					}
+				}
+			]
 		},
 		{
 			"name": "JournalDoneIntent",
@@ -43,6 +52,14 @@
 						"dialogflow": "@sys.any"
 					}
 				}
+			]
+		},
+		{
+			"name": "ON_SIGN_IN",
+			"phrases":[],
+			"inputs":[],
+			"events": [
+				"actions_intent_SIGN_IN"
 			]
 		}
 	],
