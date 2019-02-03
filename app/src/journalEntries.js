@@ -59,6 +59,9 @@ class JournalCard extends Component {
 
   render() {
     const entry = this.props.entry[1]
+    entry.emotions.foreach(emotion => {
+      emotion = Math.floor(emotion*100)
+    })
     const text = this.state.text ? this.state.text : entry.text
     return (
       <div className="entryCard">
@@ -71,11 +74,11 @@ class JournalCard extends Component {
             </div>
           : <p>{text} <button type="button" className="btn btn-link" onClick={(e) => this.setState({ editing: true, text: text })}>Edit</button></p>
         }
-        <p className="entryCardDetails">Fear: {entry.emotions.fear}</p><hr/>
-        <p className="entryCardDetails">Anger: {entry.emotions.anger}</p><hr/>
-        <p className="entryCardDetails">Joy: {entry.emotions.joy}</p><hr/>
-        <p className="entryCardDetails">Sadness: {entry.emotions.sadness}</p><hr/>
-        <p className="entryCardDetails">Surprise: {entry.emotions.surprise}</p><hr/>
+        <p className="entryCardDetails">Fear: {entry.emotions.fear}%</p><hr/>
+        <p className="entryCardDetails">Anger: {entry.emotions.anger}%</p><hr/>
+        <p className="entryCardDetails">Joy: {entry.emotions.joy}%</p><hr/>
+        <p className="entryCardDetails">Sadness: {entry.emotions.sadness}%</p><hr/>
+        <p className="entryCardDetails">Surprise: {entry.emotions.surprise}%</p><hr/>
       </div>
     );
   }
