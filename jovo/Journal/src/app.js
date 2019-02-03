@@ -36,21 +36,23 @@ app.use(
 
 app.setHandler({
     LAUNCH() {
-        this.$data.transcript = "";
-        this.$data.summary = "";
-        return this.toIntent('InitialIntent');
+        this.$session.$data.transcript = "";
+        this.$session.$data.summary = "";
+        this.toIntent('InitialIntent');
+            
+        //
     },
     InitialIntent() {
         //.
         let user = this.$googleAction.$user;
-        if (user.hasPermission('NAME')) {
-            console.log("syphilis");
-            console.log(user.getProfile());
-            console.log("asdf");
+        console.log("ID: " + user.getId());
+        if (this.googleAction.$request.getAccessToken()) {
+            console.log("YOU HAVE A TOKEN!!!!");
             this.followUpState('JournalLogState')
-                .ask('Welcome back ' + user.getProfile().givenName + ', how was your day?', 'Please tell me about your day.');
+                .ask('Welcome back, how was your day?', 'Please tell me about your day.');
 
         } else {
+            console.log("NO TOKEN");
             this.$googleAction.askForName("");
         }
 
@@ -92,14 +94,14 @@ app.setHandler({
             ask('Overall, how would you summarize how you felt in one word?', "Please give me a one word summary of your day");
         },
         JournalLogIntent() {
-            this.$data.transcript = this.$data.transcript + this.$inputs.log.value;
+            this.$session.$data.transcript = this.$session.$data.transcript + this.$inputs.log.value;
             this.followUpState('JournalLogState')
-                .ask('Did you do anything else?\n' + this.$inputs.log.value, 'What else did you do today?');
+                .ask('Did you do anything else?\n' + this.$session.$data.transcript, 'What else did you do today?');
         },
 
         EmotionLogState: {
             EmotionLogIntent() {
-                this.$data.summary = this.$inputs.emotion.value;
+                this.$session.$data.summary = this.$inputs.emotion.value;
                 this.tell('Alright, got it. Thanks for sharing!');
 
                 /*
@@ -123,8 +125,8 @@ app.setHandler({
                         return admin.firestore().collection('users/' + uid + '/sessions').add({
                             tokenRefreshTime: FieldValue.serverTimestamp(),
                             date: this.getTimestamp,
-                            text: this.$data.transcript,
-                            summary: this.$data.summary
+                            text: this.$session.$data.transcript,
+                            summary: this.$session.$data.summary
                         }).then((document) => {
                             console.log("Document saved at " + 'users/' + uid + '/sessions' + document.id);
                             return 0;
