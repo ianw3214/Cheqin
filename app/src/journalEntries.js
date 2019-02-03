@@ -1,13 +1,31 @@
 import React, { Component } from "react";
- 
+import firebase from "firebase";
 class JournalEntries extends Component {
-  render() {
-    var data = [{date:'Jan 2, 2019', transcriptExcerpt: 'blah blah blah', details:'sad'},{date:'Jan 3, 2019', transcriptExcerpt: 'blah blah blah', details:'sad'},{date:'Jan 4, 2019', transcriptExcerpt: 'blah blah blah', details:'sad'}];
+    constructor(props) {
+        super(props);
+        this.state = {entries:[]}
+        firebase.auth().currentUser.getIdToken(true).then(async (idToken) => {
+            console.log(idToken);
+            fetch("https://pfeifferh.lib.id/journal-service@dev/getSessions/?userToken="+idToken)
+            .then(response => {
+                response.text().then((text) => {
+                    let data = JSON.parse(text);
+                    this.setState({entries:data});
+                    // do something with the text response 
+                  });
+            });
+    
+          }).catch(function(error) {
+            // Handle error
+          });
+      }
+  render() {      
+    let journalEntries = this.state.entries;
     var entries = [];
-    for (var i = 0; i < data.length; i++) {
+    for (var i = 0; i < journalEntries.length; i++) {
         // note: we add a key prop here to allow react to uniquely identify each
         // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
-        entries.push(<JournalCard key={i} entry={data[i]}/>);
+        entries.push(<JournalCard key={journalEntries[i][0]} entry={journalEntries[i][1]}/>);
     }
     return (
       <div>
@@ -22,9 +40,8 @@ class JournalCard extends Component {
         return (
           <div className="entryCard">
             <h4>{this.props.entry.date}</h4>
-            <p>{this.props.entry.transcriptExcerpt}</p>
-            <p className="entryCardDetails">Mood: {this.props.entry.details}</p>
-          </div>
+            <p>{this.props.entry.text}</p>
+            <p className="entryCardDetails">Mood: {this.props.entry.emotions}</p><hr/></div>
         );
       }
     }

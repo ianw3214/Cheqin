@@ -4,6 +4,8 @@
   "description": "A sample voice app that works with the Jovo Framework",
   "main": "./index.js",
   "dependencies": {
+    "firebase-admin": "^7.0.0",
+    "firebase-tools": "^6.3.1",
     "jovo-db-filedb": "^2.0.2",
     "jovo-framework": "^2.0.14",
     "jovo-platform-alexa": "^2.0.2",
