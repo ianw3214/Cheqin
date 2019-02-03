@@ -11,7 +11,7 @@ class JournalEntries extends Component {
                 response.text().then((text) => {
                     let data = JSON.parse(text);
                     
-                    this.setState({entries:data});
+                    this.setState({entries:data, userToken: idToken});
                     // do something with the text response 
                   });
             });
@@ -26,7 +26,7 @@ class JournalEntries extends Component {
     for (var i = 0; i < journalEntries.length; i++) {
         // note: we add a key prop here to allow react to uniquely identify each
         // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
-        entries.push(<JournalCard key={journalEntries[i][0]} entry={journalEntries[i][1]}/>);
+        entries.push(<JournalCard key={journalEntries[i][0]} entry={journalEntries[i]} userToken={this.state.userToken}/>);
     }
     return (
       <div>
@@ -37,15 +37,45 @@ class JournalEntries extends Component {
   }
 }
 class JournalCard extends Component {
+
+  constructor() {
+    super()
+    this.state = { 
+      editing: false
+    }
+    this.updateText = this.updateText.bind(this)
+  }
+
+  updateText() {
+    console.log(typeof this.props.entry[0])
+    fetch("https://pfeifferh.lib.id/journal-service@dev/updateSession/?sessionId="+this.props.entry[0])
+      .then().catch()
+    this.setState({ editing: false })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ text: nextProps.entry[1].text })
+  }
+
   render() {
+    const entry = this.props.entry[1]
+
     return (
       <div className="entryCard">
-        <p>{this.props.entry.text}</p>
-        <p className="entryCardDetails">Fear: {this.props.entry.emotions.fear}</p><hr/>
-        <p className="entryCardDetails">Anger: {this.props.entry.emotions.anger}</p><hr/>
-        <p className="entryCardDetails">Joy: {this.props.entry.emotions.joy}</p><hr/>
-        <p className="entryCardDetails">Sadness: {this.props.entry.emotions.sadness}</p><hr/>
-        <p className="entryCardDetails">Surprise: {this.props.entry.emotions.surprise}</p><hr/>
+        { this.state.editing
+          ? <div className="input-group">
+              <div className="input-group-prepend">
+               <button className="btn btn-outline-secondary" type="button" onClick={(e) => this.updateText()}>Save</button>
+              </div>
+              <textarea className="form-control" aria-label="With textarea" onChange={(e) => this.setState({text: e.target.value})}>{this.state.text}</textarea>
+            </div>
+          : <p>{entry.text} <button type="button" className="btn btn-link" onClick={() => this.setState({ editing: true, text: entry.text })}>Edit</button></p>
+        }
+        <p className="entryCardDetails">Fear: {entry.emotions.fear}</p><hr/>
+        <p className="entryCardDetails">Anger: {entry.emotions.anger}</p><hr/>
+        <p className="entryCardDetails">Joy: {entry.emotions.joy}</p><hr/>
+        <p className="entryCardDetails">Sadness: {entry.emotions.sadness}</p><hr/>
+        <p className="entryCardDetails">Surprise: {entry.emotions.surprise}</p><hr/>
       </div>
     );
   }
