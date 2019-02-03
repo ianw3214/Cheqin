@@ -50,22 +50,28 @@ app.setHandler({
         //
     },
     ON_PERMISSION() {
+        console.log("POOP");
         if (this.$googleAction.isPermissionGranted()) {
-            let user = this.$googleAction.$request.getUser();
-
+            console.log("BULLSHIT");
+            let user = this.$googleAction.$user;
+            console.log("HELP");
+            console.log();
             // Check, if you have the necessary permission
             if (user.permissions.indexOf('NAME') > -1) {
-                this.followUpState('JournalLogState')
                 console.log(user.profile);
-                return ask('Welcome back' + user.profile.givenName + ', how was your day?', 'Please tell me about your day.');
+                this.followUpState('JournalLogState')
+                .ask('Welcome back' + user.profile.givenName + ', how was your day?', 'Please tell me about your day.');
                 /* 
                   user.profile.givenName
                   user.profile.familyName
                   user.profile.displayName
                 */
+            }else{
+                this.followUpState('JournalLogState')
+                .tell("Something went v wrong");
             }
         } else {
-            return tell("Sorry, I can't help you bye");
+            this.tell("Sorry, I can't help you bye");
         }
     },
 
