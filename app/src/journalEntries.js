@@ -4,7 +4,7 @@ class JournalEntries extends Component {
     constructor(props) {
         super(props);
         this.state = {entries:[]}
-        firebase.auth().currentUser.getIdToken(true).then(async (idToken) => {
+        /*firebase.auth().currentUser.getIdToken(true).then(async (idToken) => {
             console.log(idToken);
             fetch("https://pfeifferh.lib.id/journal-service@dev/getSessions/?userToken="+idToken)
             .then(response => {
@@ -18,7 +18,7 @@ class JournalEntries extends Component {
     
           }).catch(function(error) {
             // Handle error
-          });
+          });*/
       }
   render() {      
     let journalEntries = this.state.entries;
