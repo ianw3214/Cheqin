@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
 import {
-    Route,
+    Route,
     Redirect,
-    NavLink,
-    HashRouter
+    NavLink,
+    HashRouter
   } from "react-router-dom";
   import HomePage from "./homePage";
   import LoginPage from "./loginPage";
   import JournalEntries from "./journalEntries";
+  import WeekOverview from "./weekoverview";
 
   import firebase from "firebase";
   
@@ -45,7 +46,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.onAuthStateChanged = this.onAuthStateChanged.bind(this);
-    this.state = {isLoaded: false, isSignedIn: true, authUser: {}, userName: "Not signed in", userPhoto: null}
+    this.state = {isLoaded: true, isSignedIn: true, authUser: {}, userName: "Not signed in", userPhoto: null}
   }
 
   onAuthStateChanged(authUser){
@@ -140,6 +141,12 @@ class App extends Component {
               </NavLink>
             </li>
             <li className="nav-item">
+            <NavLink className="nav-link" to="/overview">
+                <i className="menu-icon mdi mdi-content-copy"></i>
+                <span className="menu-title">Weekly Overview</span>
+              </NavLink>
+            </li>
+            <li className="nav-item">
             <a className="nav-link" onClick={() => firebase.auth().signOut()}>
                 <i className="menu-icon mdi mdi-logout"></i>
                 <span className="menu-title">Log Out</span>
@@ -161,6 +168,7 @@ class App extends Component {
           <div className="content-wrapper content">
                 <Route exact path="/" render={(routeProps) => (<HomePage appName={appName}  isSignedIn={this.state.isSignedIn}/>)}/>
                 <Route path="/journal" render={(routeProps) => (<JournalEntries appName={appName}  />)}/>
+                <Route path="/overview" render={(routeProps) => (<WeekOverview appName={appName}  />)}/>
                 {/*<Route path="/login" render={(routeProps) => (<LoginPage appName={appName} isSignedIn={this.state.isSignedIn} />)}/>*/}
           </div>
           <footer className="footer">
