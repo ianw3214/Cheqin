@@ -1,17 +1,40 @@
 import React, { Component } from "react";
 import { Radar } from 'react-chartjs-2'
+import firebase from "firebase";
 
 class WeekOverview extends Component {
   constructor(props) {
     super(props);
-    
+    this.state = {entries:[]}
+    firebase.auth().currentUser.getIdToken(true).then(async (idToken) => {
+        fetch("https://pfeifferh.lib.id/journal-service@dev/getSessions/?userToken="+idToken)
+        .then(response => {
+            response.text().then((text) => {
+                let data = JSON.parse(text);
+                
+                this.setState({entries:data});
+                // do something with the text response 
+              });
+        });
+
+      }).catch(function(error) {
+        // Handle error
+      });
   }
-  render() {      
+  render() {   
+    let emotionVals = [0, 0, 0, 0, 0]
+
+    this.state.entries.forEach(entry => {
+      emotions = Object.keys(entry[1].emotions)
+      for(i in emotionVals) {
+        emotionVals[i] += emotions[i]
+      }
+    })   
     let data = {
-      labels: ["Fear", "Sadness", "Anger", "Joy", "Surprise"],
+      labels: ["Anger", "Fear", "Joy", "Sadness", "Surprise"],
       datasets: [
         {
-          label: "My First dataset",
+          label: "",
           fillColor: "#6610f2",
           strokeColor: "#6610f2",
           pointColor: "#6610f2",
@@ -19,7 +42,7 @@ class WeekOverview extends Component {
           pointHighlightFill: "#6610f2",
           pointHighlightStroke: "#6610f2",
           backgroundColor: "rgba(102, 16, 242, 0.3)",
-          data: Array.from({length: 5}, () => Math.random())
+          data: emotionVals
         }
       ]
     };
