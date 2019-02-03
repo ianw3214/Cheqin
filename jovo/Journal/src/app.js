@@ -54,7 +54,7 @@ app.setHandler({
             ask('Overall, how would you summarize how you felt in one word?', "Please give me a one word summary of your day");
         },
         JournalLogIntent() {
-            this.$session.$data.transcript = this.$session.$data.transcript + this.$inputs.log.value;
+            this.$session.$data.transcript = this.$session.$data.transcript + ' ' + this.$inputs.log.value;
             this.followUpState('JournalLogState')
                 .ask('Did you do anything else?'/* + this.$session.$data.transcript*/, 'What else did you do today?');
         }
@@ -63,7 +63,7 @@ app.setHandler({
 
     EmotionLogState: {
         EmotionLogIntent() {
-            this.tell("Ok, thanks!");
+            this.tell("Thanks, have a good day!");
 
             let emo64 = {};
             fetch('https://apiv2.indico.io/emotion', {
