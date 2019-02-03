@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "auth0-js": "^9.10.0",
     "bootstrap": ">=4.1.2",
     "chart.js": "2.7.1",
     "firebase": "^5.8.2",
@@ -10,6 +11,7 @@
     "flag-icon-css": "2.9.0",
     "font-awesome": "4.7.0",
     "gulp-sourcemaps": "^2.6.3",
+    "history": "^4.7.2",
     "jquery": "3.2.1",
     "mdi": "2.1.19",
     "popper.js": "1.12.9",
