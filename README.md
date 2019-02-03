@@ -1,22 +1,14 @@
 # JOURNAL APP
 
-## Initializing Firebase Authentication
+Digit journal with the goal to increase the usage of self reflection as it applies to mental Wellbeing.
 
-Create a file in the root directory containing your Firebase authentication data called <em>settings.json</em>. 
+This project consists of four modules:
 
-It should look like this:
-
->{
-  "type": "service_account",
-  "project_id": "journalagent-db480",
-  "private_key_id": "YOUR_PRIVATE_KEY_ID",
-  "private_key": "YOUR_PRIVATE_KEY",
-  "client_email": "YOUR_CLIENT_EMAIL",
-  "client_id": "YOUR_CLIENT_ID",
-  "auth_uri": "YOUR_AUTH_URI",
-  "token_uri": "YOUR_TOKEN_URI",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "CLIENT_X509"
-}
-
-This file can be downloaded from the Firestore console under <em>Settings -> Project Settings -> Service Accounts</em>, and clicking <em>Generate New Private Key</em>
+- ### app
+  - This is the front end application allowing for users to view their past week of emotions and journal entries.
+- ### api
+  - This is a cloud deployed api performing CRUD operations between the input/output components and the Firestore database.
+- ### jovo
+  - This is the interface with the Google Assistant api. The app has a pleasant conversation with the user to obtain their voice input.
+- ### ml
+  - This is the indico machine learning interface which analyzes the user-generated text and returns the evaluated emotion weights of the text.

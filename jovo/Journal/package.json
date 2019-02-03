@@ -9,7 +9,8 @@
     "jovo-db-filedb": "^2.0.2",
     "jovo-framework": "^2.0.14",
     "jovo-platform-googleassistant": "^2.0.2",
-    "jovo-plugin-debugger": "^2.0.2"
+    "jovo-plugin-debugger": "^2.0.2",
+    "request-promise": "^4.2.2"
   },
   "devDependencies": {
     "gulp": "^4.0.0",

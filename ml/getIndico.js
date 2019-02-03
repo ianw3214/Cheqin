@@ -13,28 +13,38 @@ app.get('/', function(req, res) {
     });
 
     req.on('end', ()=>{
-        input_data = JSON.parse(input_data);
+    input_data = JSON.parse(input_data);
 
-        console.log(input_data.text)
+    console.log(input_data)
 
-        fetch('https://apiv2.indico.io/emotion', {
-            method: 'POST',
-            body: JSON.stringify({
-                api_key: '3deac03d4a4ed32e154aa18e4742fecf',
-                data: input_data.text
-            })
+    fetch('https://apiv2.indico.io/emotion', {
+        method: 'POST',
+        body: JSON.stringify({
+            api_key: 'e8ed0c055e13d18183a1513838645d8a',
+            data: input_data.text
         })
-        .then(r => r.json())
-        // TODO: Send a success/failure response to the client
+    })
+    .then(r => r.json())
+    .then(response => {
+        console.log(response.results);
+        // Send a success response to the client
+        res.status(200).json({status:"ok"})
+        // TODO: Store information to firebase
+
+        let emojson = JSON.stringify(response.results);
+        let emo64 = Buffer.from(emojson).toString("base64");
+
+    
+        fetch("https://pfeifferh.lib.id/journal-service@dev/updateSession/?userId=" + input_data.userID
+        + "&sessionId=" + input_data.sessionID + "&text=" + input_data.text + "&emotions=" + emo64)
         .then(response => {
-            
-            // TODO: Store information to firebase
-            console.log(response);
+            console.log("responese normal");
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err));            
+    })
+    // Send a failure response to the client
+    .catch(err => console.log(err));
     });
-
-    res.send("endget");
 
 });
 
@@ -71,7 +81,7 @@ app.post('/', function (req, res) {
             fetch("https://pfeifferh.lib.id/journal-service@dev/updateSession/?userId=" + input_data.userID
             + "&sessionId=" + input_data.sessionID + "&text=" + input_data.text + "&emotions=" + emo64)
             .then(response => {
-                console.log("success update")
+                console.log("responese normal");
             })
             .catch(err => console.log(err));            
         })
