@@ -7,10 +7,17 @@
 * @param {Array} emotions Emotion array of length 6
 */
 
+let admin = require('firebase-admin')
+let serviceAccount = {
+  
+}
 
-module.exports = async (userId, sessionId, text, emotions=null, settingsPath='../../../../settings.json', context) => {
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://journalagent-db480.firebaseio.com'
+})
 
-  emotions = emotions.map(Number) //Force elements to be of number type
+module.exports = async (sessionId='', userToken, text='', emotions=null, context) => {
 
   let userId = ''
   await admin.auth().verifyIdToken(userToken)
