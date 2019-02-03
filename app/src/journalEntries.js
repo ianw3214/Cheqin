@@ -47,9 +47,9 @@ class JournalCard extends Component {
   }
 
   updateText() {
-    console.log(typeof this.props.entry[0])
-    fetch("https://pfeifferh.lib.id/journal-service@dev/updateSession/?sessionId="+this.props.entry[0])
-      .then().catch()
+    fetch("https://pfeifferh.lib.id/journal-service@dev/updateSession/?userToken=" + this.props.userToken + "&sessionId=" + this.props.entry[0] + "&text=" + this.state.text)
+      .then().catch(err => console.log(err));
+
     this.setState({ editing: false })
   }
 
@@ -59,7 +59,7 @@ class JournalCard extends Component {
 
   render() {
     const entry = this.props.entry[1]
-
+    const text = this.state.text ? this.state.text : entry.text
     return (
       <div className="entryCard">
         { this.state.editing
@@ -69,7 +69,7 @@ class JournalCard extends Component {
               </div>
               <textarea className="form-control" aria-label="With textarea" onChange={(e) => this.setState({text: e.target.value})}>{this.state.text}</textarea>
             </div>
-          : <p>{entry.text} <button type="button" className="btn btn-link" onClick={() => this.setState({ editing: true, text: entry.text })}>Edit</button></p>
+          : <p>{text} <button type="button" className="btn btn-link" onClick={(e) => this.setState({ editing: true, text: text })}>Edit</button></p>
         }
         <p className="entryCardDetails">Fear: {entry.emotions.fear}</p><hr/>
         <p className="entryCardDetails">Anger: {entry.emotions.anger}</p><hr/>
