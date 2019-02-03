@@ -44,8 +44,8 @@ export const makeMainRoutes = () => {
           <Route path="/" render={(props) => <App appName={appName} auth={auth} innerContents={<>
           <Route exact path="/" render={(routeProps) => (<HomePage appName={appName}  auth={auth} />)}/>
               <Route path="/journal" render={(routeProps) => (<JournalEntries auth={auth} appName={appName}  />)}/>
-              <Route path="/login" render={(routeProps) => (<LoginPage auth={auth} appName={appName} />)}/></>} />} />
-              <Route path="/overview" render={(routeProps) => (<WeekOverview auth={auth} appName={appName}  />)}/>
+              <Route path="/login" render={(routeProps) => (<LoginPage auth={auth} appName={appName} />)}/>
+              <Route path="/overview" render={(routeProps) => (<WeekOverview auth={auth} appName={appName}  />)}/></>} />} />
           
           
         </div>
