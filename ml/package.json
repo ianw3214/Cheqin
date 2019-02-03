@@ -1,0 +1,22 @@
+{
+  "name": "journal-service",
+  "version": "0.0.0",
+  "description": "",
+  "author": "PfeifferH <hayden@pfeiffer.ca>",
+  "main": "functions/__main__.js",
+  "dependencies": {
+    "express": "^4.16.4",
+    "firebase-admin": "^7.0.0",
+    "lib": "^3.0.2"
+  },
+  "private": true,
+  "stdlib": {
+    "build": "faaslang",
+    "name": "PfeifferH/journal-service",
+    "timeout": 10000,
+    "personalize": {
+      "keys": [],
+      "user": []
+    }
+  }
+}

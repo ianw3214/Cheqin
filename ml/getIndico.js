@@ -1,3 +1,5 @@
+const lib = require('lib');
+
 var express = require('express');
 var app = express();
 app.use(express.json())
@@ -13,6 +15,8 @@ app.get('/', function(req, res) {
 
     req.on('end', ()=>{
         input_data = JSON.parse(input_data);
+
+        console.log(input_data.text)
 
         fetch('https://apiv2.indico.io/emotion', {
             method: 'POST',
@@ -37,14 +41,6 @@ app.get('/', function(req, res) {
 
 app.post('/', function (req, res) {
 
-    let admin = require('firebase-admin')
-    let serviceAccount = require(settingsPath)
-
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        databaseURL: 'https://journalagent-db480.firebaseio.com'
-    })
-
     var input_data = "";
     req.on('data', (chunk) => {
         input_data += chunk;
@@ -53,27 +49,29 @@ app.post('/', function (req, res) {
     req.on('end', ()=>{
         input_data = JSON.parse(input_data);
 
+        console.log(input_data.text)
+
         fetch('https://apiv2.indico.io/emotion', {
             method: 'POST',
             body: JSON.stringify({
-                api_key: '3deac03d4a4ed32e154aa18e4742fecf',
+                api_key: 'e8ed0c055e13d18183a1513838645d8a',
                 data: input_data.text
             })
         })
         .then(r => r.json())
         .then(response => {
+            console.log(response);
             // Send a success response to the client
             res.status(200).json({status:"ok"})
             // TODO: Store information to firebase
-            console.log(response);
 
-            const db = admin.firestore()
-            const ref = db.collection('users/' + userId + '/sessions/').doc(sessionId)
+            lib.pfeifferh.updateSession['@dev']({sessionId: "1YWjOJ3doYwCnjFo8wtv", userId: "Xgmr4rdQvID50asl5MVY", text: input_data.text, emotions: response.results});
         })
         // Send a failure response to the client
-        .catch(err => {
-            res.status(500).json({status:err})
-        });
+        .catch(err => console.log(err));
+        //.catch(err => {
+        //    res.status(500).json({status:err})
+        //});
     });
 
     //res.send("endpost");
