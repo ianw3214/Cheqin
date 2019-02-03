@@ -68,11 +68,14 @@ class JournalCard extends Component {
   }
 
   render() {
+    console.log(this.props)
     const entry = this.props.entry[1]
-    entry.emotions.foreach(emotion => {
-      emotion = Math.floor(emotion*100)
-    })
-    const text = this.state.text ? this.state.text : entry.text
+    for(var key in entry.emotions) {
+      entry.emotions[key] = Math.floor(entry.emotions[key]*100)
+    }
+    
+    const text = this.state.text ? this.state.text : entry.text //SET THE STATE TEXT IF IT HAS BEEN RECEIVED 
+    console.log(entry.emotions)
     return (
       <div className="entryCard">
         { this.state.editing
@@ -82,13 +85,19 @@ class JournalCard extends Component {
               </div>
               <textarea className="form-control" aria-label="With textarea" onChange={(e) => this.setState({text: e.target.value})}>{this.state.text}</textarea>
             </div>
-          : <p>{text} <button type="button" className="btn btn-link" onClick={(e) => this.setState({ editing: true, text: text })}>Edit</button></p>
+          : <h4>{text} <button type="button" className="btn btn-link" onClick={(e) => this.setState({ editing: true, text: text })}>Edit</button></h4>
         }
-        <p className="entryCardDetails">Fear: {entry.emotions.fear}%</p><hr/>
-        <p className="entryCardDetails">Anger: {entry.emotions.anger}%</p><hr/>
-        <p className="entryCardDetails">Joy: {entry.emotions.joy}%</p><hr/>
-        <p className="entryCardDetails">Sadness: {entry.emotions.sadness}%</p><hr/>
-        <p className="entryCardDetails">Surprise: {entry.emotions.surprise}%</p><hr/>
+        { entry.emotions //THESE ARE YOUR EMOTIONS
+          ? <div>
+              <p className="entryCardDetails">Fear: {entry.emotions.fear}%</p><hr/>
+              <p className="entryCardDetails">Anger: {entry.emotions.anger}%</p><hr/>
+              <p className="entryCardDetails">Joy: {entry.emotions.joy}%</p><hr/>
+              <p className="entryCardDetails">Sadness: {entry.emotions.sadness}%</p><hr/>
+              <p className="entryCardDetails">Surprise: {entry.emotions.surprise}%</p><hr/>
+            </div>
+          : ''
+        }
+        <div class="mt-2 col-md-12"></div>
       </div>
     );
   }
