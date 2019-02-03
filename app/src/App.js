@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import './App.css';
 import {
-    Route,
+    Route,
     Redirect,
-    NavLink,
-    HashRouter
+    NavLink,
+    HashRouter
   } from "react-router-dom";
   import HomePage from "./homePage";
   import LoginPage from "./loginPage";
   import JournalEntries from "./journalEntries";
+  import WeekOverview from "./weekoverview";
 
-  // import firebase from "firebase";
+  import firebase from "firebase";
   
   // Configure Firebase.
   var config = {
@@ -23,6 +24,7 @@ import {
   };
   firebase.initializeApp(config);
 
+  const appName = "Daily CheqIn";
 class App extends Component {
 
 
@@ -44,83 +46,83 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.onAuthStateChanged = this.onAuthStateChanged.bind(this);
-    this.state = {isLoaded: false, isSignedIn: true, authUser: {}, userName: "Not signed in", userPhoto: null}
+    this.state = {isLoaded: true, isSignedIn: true, authUser: {}, userName: "Not signed in", userPhoto: null}
   }
 
-  // onAuthStateChanged(authUser){
-  //   this.setState({ authUser: authUser})
-  //   if(authUser != null) {
-  //     this.setState({ userName: authUser.displayName, userPhoto: authUser.photoURL})
-  //   }else{
-  //     this.setState({ userName: "Not signed in", userPhoto: null})
-  //   }
-  // }
+  onAuthStateChanged(authUser){
+    this.setState({ authUser: authUser})
+    if(authUser != null) {
+      this.setState({ userName: authUser.displayName, userPhoto: authUser.photoURL})
+    }else{
+      this.setState({ userName: "Not signed in", userPhoto: null})
+    }
+  }
 
   render() {
     if(this.state.isLoaded){
       return (
         <HashRouter>
           <div className="container-scroller App">
-            <nav className="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-            <div className="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
-            {/*<a className="navbar-brand brand-logo" href="index.html">
-              <img src="images/logo.svg" alt="logo" />
-            </a>
-            <a className="navbar-brand brand-logo-mini" href="index.html">
-              <img src="images/logo-mini.svg" alt="logo" />
-            </a>*/}
-          </div>
-          <div className="navbar-menu-wrapper d-flex align-items-center">
-            <ul className="navbar-nav navbar-nav-right">
-            {this.state.isSignedIn ? <>
-              <li className="nav-item dropdown">
-                <a className="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
-                  <i className="mdi mdi-bell"></i>
-                  <span className="count">1</span>
+      <nav className="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div className="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+          {/*<a className="navbar-brand brand-logo" href="index.html">
+            <img src="images/logo.svg" alt="logo" />
+          </a>
+          <a className="navbar-brand brand-logo-mini" href="index.html">
+            <img src="images/logo-mini.svg" alt="logo" />
+          </a>*/}
+        </div>
+        <div className="navbar-menu-wrapper d-flex align-items-center">
+          <ul className="navbar-nav navbar-nav-right">
+          {this.state.isSignedIn ? <>
+            <li className="nav-item dropdown">
+              <a className="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+                <i className="mdi mdi-bell"></i>
+                <span className="count">1</span>
+              </a>
+              <div className="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+                <a className="dropdown-item">
+                  <p className="mb-0 font-weight-normal float-left">You have 1 new notifications
+                  </p>
+                  <span className="badge badge-pill badge-warning float-right">View all</span>
                 </a>
-                <div className="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                  <a className="dropdown-item">
-                    <p className="mb-0 font-weight-normal float-left">You have 1 new notifications
+                <div className="dropdown-divider"></div>
+                <a className="dropdown-item preview-item">
+                  <div className="preview-thumbnail">
+                    <div className="preview-icon bg-success">
+                      <i className="mdi mdi-alert-circle-outline mx-0"></i>
+                    </div>
+                  </div>
+                  <div className="preview-item-content">
+                    <h6 className="preview-subject font-weight-medium text-dark">Welcome to Daily Cheqin</h6>
+                    <p className="font-weight-light small-text">
+                      Just now
                     </p>
-                    <span className="badge badge-pill badge-warning float-right">View all</span>
-                  </a>
-                  <div className="dropdown-divider"></div>
-                  <a className="dropdown-item preview-item">
-                    <div className="preview-thumbnail">
-                      <div className="preview-icon bg-success">
-                        <i className="mdi mdi-alert-circle-outline mx-0"></i>
-                      </div>
-                    </div>
-                    <div className="preview-item-content">
-                      <h6 className="preview-subject font-weight-medium text-dark">Welcome to Daily Cheqin</h6>
-                      <p className="font-weight-light small-text">
-                        Just now
-                      </p>
-                    </div>
-                  </a>
-                  <div className="dropdown-divider"></div>
-                </div>
-              </li>
-              <li className="nav-item dropdown d-none d-xl-inline-block">
-                <a className="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                  
-                  <span className="profile-text">Hello, {this.state.userName}!</span><img className="img-xs rounded-circle" src={this.state.userPhoto} alt="Profile"></img>
-                  
+                  </div>
                 </a>
-                <div className="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-                  <a className="dropdown-item mt-2">
-                    Account Settings
-                  </a>
-                  {/* <a className="dropdown-item" onClick={() => firebase.auth().signOut()}>
-                    Sign Out
-                  </a> */}
-                </div>
-              </li></> : ''}
-            </ul>
-            <button className="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-              <span className="mdi mdi-menu"></span>
-            </button>
-          </div>
+                <div className="dropdown-divider"></div>
+              </div>
+            </li>
+            <li className="nav-item dropdown d-none d-xl-inline-block">
+              <a className="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                
+                <span className="profile-text">Hello, {this.state.userName}!</span><img className="img-xs rounded-circle" src={this.state.userPhoto} alt="Profile"></img>
+                
+              </a>
+              <div className="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                <a className="dropdown-item mt-2">
+                  Account Settings
+                </a>
+                <a className="dropdown-item" onClick={() => firebase.auth().signOut()}>
+                  Sign Out
+                </a>
+              </div>
+            </li></> : ''}
+          </ul>
+          <button className="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+            <span className="mdi mdi-menu"></span>
+          </button>
+        </div>
       </nav>
       <div className="container-fluid page-body-wrapper">
         <nav className="sidebar sidebar-offcanvas" id="sidebar">
@@ -139,10 +141,16 @@ class App extends Component {
               </NavLink>
             </li>
             <li className="nav-item">
-            {/* <a className="nav-link" onClick={() => firebase.auth().signOut()}>
+            <NavLink className="nav-link" to="/overview">
+                <i className="menu-icon mdi mdi-content-copy"></i>
+                <span className="menu-title">Weekly Overview</span>
+              </NavLink>
+            </li>
+            <li className="nav-item">
+            <a className="nav-link" onClick={() => firebase.auth().signOut()}>
                 <i className="menu-icon mdi mdi-logout"></i>
                 <span className="menu-title">Log Out</span>
-              </a> */}
+              </a>
             </li>
             </> : ''}
 
@@ -160,6 +168,7 @@ class App extends Component {
           <div className="content-wrapper content">
                 <Route exact path="/" render={(routeProps) => (<HomePage appName={appName}  isSignedIn={this.state.isSignedIn}/>)}/>
                 <Route path="/journal" render={(routeProps) => (<JournalEntries appName={appName}  />)}/>
+                <Route path="/overview" render={(routeProps) => (<WeekOverview appName={appName}  />)}/>
                 {/*<Route path="/login" render={(routeProps) => (<LoginPage appName={appName} isSignedIn={this.state.isSignedIn} />)}/>*/}
           </div>
           <footer className="footer">
