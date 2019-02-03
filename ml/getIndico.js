@@ -37,6 +37,14 @@ app.get('/', function(req, res) {
 
 app.post('/', function (req, res) {
 
+    let admin = require('firebase-admin')
+    let serviceAccount = require(settingsPath)
+
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: 'https://journalagent-db480.firebaseio.com'
+    })
+
     var input_data = "";
     req.on('data', (chunk) => {
         input_data += chunk;
@@ -58,6 +66,9 @@ app.post('/', function (req, res) {
             res.status(200).json({status:"ok"})
             // TODO: Store information to firebase
             console.log(response);
+
+            const db = admin.firestore()
+            const ref = db.collection('users/' + userId + '/sessions/').doc(sessionId)
         })
         // Send a failure response to the client
         .catch(err => {
