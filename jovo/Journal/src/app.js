@@ -16,6 +16,7 @@ const {
 const {
     FileDb
 } = require('jovo-db-filedb');
+const rp = require('request-promise');
 
 const app = new App();
 
@@ -39,25 +40,50 @@ app.setHandler({
         this.$session.$data.transcript = "";
         this.$session.$data.summary = "";
         this.$session.$data.name = "";
-        this.toIntent('InitialIntent');
-            
-        //
+        // Transition to next state based on whether access token is available
+        if (!this.$request.getAccessToken()) {
+            this.showAccountLinkingCard();
+        } else {
+            this.toIntent('InitialIntent');
+        }
+    },
+    ON_SIGN_IN() {
+        if (this.$googleAction.getSignInStatus() === 'CANCELLED') {
+            this.tell("User account link cancelled...");
+        } else if (this.$googleAction.getSignInStatus() === 'OK') {
+            let token = this.$request.getAccessToken();
+            let options = {
+                method: 'GET',
+                uri: 'https://cheqin.auth0.com/userinfo', // You can find your URL on Client --> Settings --> 
+                // Advanced Settings --> Endpoints --> OAuth User Info URL
+                headers: {
+                    authorization: 'Bearer ' + token,
+                }
+            };
+
+            await rp(options).then((body) => {
+                let data = JSON.parse(body);
+                /*
+                To see how the user data was stored,
+                go to Auth -> Users -> Click on the user you authenticated earlier -> Raw JSON
+                */
+                // this.tell(data.name + ', ' + data.email);
+                this.followUpState('JournalLogState')
+                    .ask('Welcome back ' + data.name + ', how was your day?', 'Please tell me about your day.');
+            });
+        } else if (this.$googleAction.getSignInStatus() === 'ERROR') {
+            this.tell("User account link failed...");
+        }
     },
     InitialIntent() {
-        //.
-        this.$googleAction.askForName("");
-
-        //
+        this.followUpState('JournalLogState')
+            .ask('Welcome back ' + user.getProfile().givenName + ', how was your day?', 'Please tell me about your day.');
     },
+    /*
     ON_PERMISSION() {
-        console.log("POOP");
         if (this.$googleAction.isPermissionGranted()) {
-            console.log("BULLSHIT");
             let user = this.$googleAction.$user;
-            console.log("HELP");
-            console.log(user);
             console.log(user.getAccessToken());
-            console.log("HMMMM");
             // Check, if you have the necessary permission
             if (user.hasPermission('NAME')) {
                 console.log("syphilis");
@@ -66,11 +92,6 @@ app.setHandler({
                 this.$session.$data.name = user.getProfile().givenName;
                 this.followUpState('JournalLogState')
                     .ask('Welcome back ' + user.getProfile().givenName + ', how was your day?', 'Please tell me about your day.');
-                /* 
-                  user.profile.givenName
-                  user.profile.familyName
-                  user.profile.displayName
-                */
             } else {
                 this.followUpState('JournalLogState')
                     .tell("Something went v wrong");
@@ -79,6 +100,7 @@ app.setHandler({
             this.tell("Sorry, I can't help you bye");
         }
     },
+    */
 
     JournalLogState: {
         JournalDoneIntent() {
@@ -93,7 +115,6 @@ app.setHandler({
 
         EmotionLogState: {
             EmotionLogIntent() {
-                console.log("ARG");
                 this.$session.$data.summary = this.$inputs.emotion.value;
                 this.tell('Alright, got it. Thanks for sharing!');
 
@@ -133,14 +154,8 @@ app.setHandler({
                         console.log(error);
                         return error;
                     });*/
-                    console.log("ARG2");
-                    var uid = "";
-                    if(this.$session.$data.name == "Angelo"){
-                        uid = 'SCeGyN9EoTXu4XAMw1xEtu0epL02';
-                    }else if(this.$session.$data.name == "Hayden"){
-                        uid = '6H69SdNZbwO4hrPFVQJN6eO8Ccu1';
-                    }
                     
+                    /*  TODO: (Ian) Implement this
                     return admin.firestore().collection('users/' + uid + '/sessions').add({
                         tokenRefreshTime: FieldValue.serverTimestamp(),
                         date: "Feb 3, 2019",
@@ -153,6 +168,7 @@ app.setHandler({
                         console.log(e);
                         return e;
                     });
+                    */
 
 
                 // this.$inputs.emotion.value <- FOR THE INPUT

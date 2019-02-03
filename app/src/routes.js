@@ -7,6 +7,7 @@ import history from './history';
 import HomePage from "./homePage";
 import firebase from "firebase";
 import LoginPage from "./loginPage";
+import WeekOverview from "./weekoverview";
 import JournalEntries from "./journalEntries";
 
   
@@ -44,7 +45,7 @@ export const makeMainRoutes = () => {
           <Route exact path="/" render={(routeProps) => (<HomePage appName={appName}  auth={auth} />)}/>
               <Route path="/journal" render={(routeProps) => (<JournalEntries auth={auth} appName={appName}  />)}/>
               <Route path="/login" render={(routeProps) => (<LoginPage auth={auth} appName={appName} />)}/></>} />} />
-          
+              <Route path="/overview" render={(routeProps) => (<WeekOverview auth={auth} appName={appName}  />)}/>
           
           
         </div>

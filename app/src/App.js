@@ -3,10 +3,10 @@ import './App.css';
 import Auth from './Auth/Auth.js';
 import firebase from "firebase";
 import {
-    Route,
+    Route,
     Redirect,
-    NavLink,
-    HashRouter
+    NavLink,
+    HashRouter
   } from "react-router-dom";
 
 
@@ -15,8 +15,6 @@ import {
   
 class App extends Component {
       
-
-
 
   render() {
     return(<div className="container-scroller App">
@@ -94,6 +92,10 @@ class App extends Component {
               </NavLink>
           </li>
           <li className="nav-item">
+          <NavLink className="nav-link" to="/overview">
+                <i className="menu-icon mdi mdi-content-copy"></i>
+                <span className="menu-title">Weekly Overview</span>
+              </NavLink>
           <NavLink className="nav-link" to="/journal">
               <i className="menu-icon mdi mdi-content-copy"></i>
               <span className="menu-title">Journal Entries</span>
