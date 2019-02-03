@@ -12,7 +12,7 @@ let serviceAccount = {
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://journalagent-db480.firebaseio.com'
+  databaseURL: "https://daily-cheqin.firebaseio.com"
 })
 
 module.exports = async (userToken='', userId=null, context) => {
