@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import {
     Route,
@@ -14,15 +13,15 @@ import {
   import firebase from "firebase";
   
   // Configure Firebase.
-const config = {
-  apiKey: "AIzaSyAu2owEMXHV9UT7QO2oOyjNVNGSHqSfZLE",
-    authDomain: "journalagent-db480.firebaseapp.com",
-    databaseURL: "https://journalagent-db480.firebaseio.com",
-    projectId: "journalagent-db480",
-    storageBucket: "journalagent-db480.appspot.com",
-    messagingSenderId: "472886687367"
-};
-firebase.initializeApp(config);
+  var config = {
+    apiKey: "AIzaSyDnmprTKJt-VYkhVDryq9G4a_2JjHMYVJM",
+    authDomain: "daily-cheqin.firebaseapp.com",
+    databaseURL: "https://daily-cheqin.firebaseio.com",
+    projectId: "daily-cheqin",
+    storageBucket: "daily-cheqin.appspot.com",
+    messagingSenderId: "709508738073"
+  };
+  firebase.initializeApp(config);
 
   const appName = "Daily CheqIn";
 class App extends Component {
@@ -30,23 +29,23 @@ class App extends Component {
 
     // Listen to the Firebase Auth state and set the local state.
     componentDidMount() {
-      this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
+      /*this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
           (user) => {
             this.onAuthStateChanged(firebase.auth().currentUser);
             this.setState({isSignedIn: !!user, isLoaded: true})
           }
-      );
+      );*/
     }
     
     // Make sure we un-register Firebase observers when the component unmounts.
     componentWillUnmount() {
-      this.unregisterAuthObserver();
+      //this.unregisterAuthObserver();
     }
       
   constructor(props) {
     super(props);
     this.onAuthStateChanged = this.onAuthStateChanged.bind(this);
-    this.state = {isLoaded: false, isSignedIn: false, authUser: {}, userName: "Not signed in", userPhoto: null}
+    this.state = {isLoaded: false, isSignedIn: true, authUser: {}, userName: "Not signed in", userPhoto: null}
   }
 
   onAuthStateChanged(authUser){
@@ -162,7 +161,7 @@ class App extends Component {
           <div className="content-wrapper content">
                 <Route exact path="/" render={(routeProps) => (<HomePage appName={appName}  isSignedIn={this.state.isSignedIn}/>)}/>
                 <Route path="/journal" render={(routeProps) => (<JournalEntries appName={appName}  />)}/>
-                <Route path="/login" render={(routeProps) => (<LoginPage appName={appName} isSignedIn={this.state.isSignedIn} />)}/>
+                {/*<Route path="/login" render={(routeProps) => (<LoginPage appName={appName} isSignedIn={this.state.isSignedIn} />)}/>*/}
           </div>
           <footer className="footer">
             <div className="container-fluid clearfix">
