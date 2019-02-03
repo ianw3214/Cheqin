@@ -55,6 +55,20 @@
 				"no"
 			],
 			"inputs": []
+		},
+		{
+			"name": "AppContinueIntent",
+			"phrases": [
+				"{log}"
+			],
+			"inputs": [
+				{
+					"name": "log",
+					"type": {
+						"dialogflow": "@sys.any"
+					}
+				}
+			]
 		}
 	],
 	"alexa": {

@@ -57,7 +57,7 @@ app.setHandler({
         AppDoneIntent() {
             this.tell("Goodnight, thanks for sharing!");
         },
-        JournalLogIntent() {
+        AppContinueIntent() {
             this.followUpState('JournalLogState').
                 ask('Did you do anything else?', 'What else did you do today?');
         }
