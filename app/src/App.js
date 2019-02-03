@@ -45,7 +45,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.onAuthStateChanged = this.onAuthStateChanged.bind(this);
-    this.state = {isLoaded: false, isSignedIn: true, authUser: {}, userName: "Not signed in", userPhoto: null}
+    this.state = {isLoaded: true, isSignedIn: false, authUser: {}, userName: "Not signed in", userPhoto: null}
   }
 
   onAuthStateChanged(authUser){
@@ -161,7 +161,7 @@ class App extends Component {
           <div className="content-wrapper content">
                 <Route exact path="/" render={(routeProps) => (<HomePage appName={appName}  isSignedIn={this.state.isSignedIn}/>)}/>
                 <Route path="/journal" render={(routeProps) => (<JournalEntries appName={appName}  />)}/>
-                {/*<Route path="/login" render={(routeProps) => (<LoginPage appName={appName} isSignedIn={this.state.isSignedIn} />)}/>*/}
+                <Route path="/login" render={(routeProps) => (<LoginPage appName={appName} isSignedIn={this.state.isSignedIn} />)}/>
           </div>
           <footer className="footer">
             <div className="container-fluid clearfix">
