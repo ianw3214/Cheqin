@@ -44,10 +44,29 @@ app.setHandler({
         this.$data.summary = "";
         return this.toIntent('InitialIntent');
     },
-
     InitialIntent() {
-        this.followUpState('JournalLogState').
-        ask('Welcome back, how was your day?', 'Please tell me about your day.');
+        //.
+        this.$googleAction.askForName("");
+        //
+    },
+    ON_PERMISSION() {
+        if (this.$googleAction.isPermissionGranted()) {
+            let user = this.$googleAction.$request.getUser();
+
+            // Check, if you have the necessary permission
+            if (user.permissions.indexOf('NAME') > -1) {
+                this.followUpState('JournalLogState')
+                console.log(user.profile);
+                return ask('Welcome back' + user.profile.givenName + ', how was your day?', 'Please tell me about your day.');
+                /* 
+                  user.profile.givenName
+                  user.profile.familyName
+                  user.profile.displayName
+                */
+            }
+        } else {
+            return tell("Sorry, I can't help you bye");
+        }
     },
 
     JournalLogState: {
@@ -68,7 +87,15 @@ app.setHandler({
             this.tell('Alright, got it. Thanks for sharing!');
 
             var uid = "";
-            console.log("WHAT");
+            console.log("idToken " + this.$user.idToken);
+            console.log("session raw" + this.$request.session)
+            console.log("session keys" + Object.keys(this.$request.session))
+            console.log("session stringify" + JSON.stringify(this.$user))
+            console.log("user raw" + this.$user);
+            console.log("user keys " + Object.keys(this.$user));
+            console.log("user stringify" + JSON.stringify(this.$user));
+            console.log("access tokan" + this.$request.getAccessToken());
+
             return admin.auth().verifyIdToken(this.$user.idToken)
                 .then((decodedToken) => {
                     console.log("Token decoded");
@@ -82,7 +109,8 @@ app.setHandler({
                     }).then((document) => {
                         console.log("Document saved at " + 'users/' + uid + '/sessions' + document.id);
                         return 0;
-                    }).catch((e) =>{
+                    }).catch((e) => {
+                        console.log(e);
                         return e;
                     });
                     // ...
@@ -91,11 +119,11 @@ app.setHandler({
                     console.log(error);
                     return error;
                 });
-                
+
 
 
             // this.$inputs.emotion.value <- FOR THE INPUT
-            
+
         }
     }
 
