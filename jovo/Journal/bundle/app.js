@@ -8,9 +8,6 @@ const {
     App
 } = require('jovo-framework');
 const {
-    Alexa
-} = require('jovo-platform-alexa');
-const {
     GoogleAssistant
 } = require('jovo-platform-googleassistant');
 const {
@@ -22,12 +19,11 @@ const {
 
 const app = new App();
 
-const firebase_tools = require('firebase-tools');
+//const firebase_tools = require('firebase-tools');
 const admin = require('firebase-admin');
 admin.initializeApp();
 
 app.use(
-    new Alexa(),
     new GoogleAssistant(),
     new JovoDebugger(),
     new FileDb()
@@ -46,7 +42,18 @@ app.setHandler({
     },
     InitialIntent() {
         //.
-        this.$googleAction.askForName("");
+        let user = this.$googleAction.$user;
+        if (user.hasPermission('NAME')) {
+            console.log("syphilis");
+            console.log(user.getProfile());
+            console.log("asdf");
+            this.followUpState('JournalLogState')
+                .ask('Welcome back ' + user.getProfile().givenName + ', how was your day?', 'Please tell me about your day.');
+
+        } else {
+            this.$googleAction.askForName("");
+        }
+
         //
     },
     ON_PERMISSION() {
@@ -55,19 +62,24 @@ app.setHandler({
             console.log("BULLSHIT");
             let user = this.$googleAction.$user;
             console.log("HELP");
+            console.log(user);
+            console.log(user.getAccessToken());
+            console.log("HMMMM");
             // Check, if you have the necessary permission
-            if (user.permissions.indexOf('NAME') > -1) {
-                console.log(user.profile);
+            if (user.hasPermission('NAME')) {
+                console.log("syphilis");
+                console.log(user.getProfile());
+                console.log("asdf");
                 this.followUpState('JournalLogState')
-                .ask('Welcome back' + user.profile.givenName + ', how was your day?', 'Please tell me about your day.');
+                    .ask('Welcome back ' + user.getProfile().givenName + ', how was your day?', 'Please tell me about your day.');
                 /* 
                   user.profile.givenName
                   user.profile.familyName
                   user.profile.displayName
                 */
-            }else{
+            } else {
                 this.followUpState('JournalLogState')
-                .tell("Something went v wrong");
+                    .tell("Something went v wrong");
             }
         } else {
             this.tell("Sorry, I can't help you bye");
@@ -90,6 +102,7 @@ app.setHandler({
                 this.$data.summary = this.$inputs.emotion.value;
                 this.tell('Alright, got it. Thanks for sharing!');
 
+                /*
                 var uid = "";
                 console.log("idToken " + this.$user.idToken);
                 console.log("session raw" + this.$request.session)
@@ -99,8 +112,10 @@ app.setHandler({
                 console.log("user keys " + Object.keys(this.$user));
                 console.log("user stringify" + JSON.stringify(this.$user));
                 console.log("access tokan" + this.$request.getAccessToken());
+                */
+                let user = this.$googleAction.$user;
 
-                return admin.auth().verifyIdToken(this.$user.idToken)
+                return admin.auth().verifyIdToken(user.getAccessToken())
                     .then((decodedToken) => {
                         console.log("Token decoded");
                         uid = decodedToken.uid;
