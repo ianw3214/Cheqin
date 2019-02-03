@@ -6,7 +6,6 @@
 
 let admin = require('firebase-admin')
 let serviceAccount = {
-  
   "type": "service_account",
   "project_id": "journalagent-db480",
   "private_key_id": "42cdc093d35ca44223b3bc58c1ae378a7fb81ad5",
@@ -19,25 +18,26 @@ let serviceAccount = {
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-1g09h%40journalagent-db480.iam.gserviceaccount.com"
 }
 
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: 'https://journalagent-db480.firebaseio.com'
 })
 
-module.exports = async (userToken='', userId, context) => {
-  if(!userId) {
-    let userId = ''
+module.exports = async (userToken='', userId=null, context) => {
+  if(userId === null) {
+    userId = ''
     await admin.auth().verifyIdToken(userToken)
     .then((decodedToken) => {
       userId = decodedToken.uid;  
+     
     }).catch((error) => {
       console.log('Error: Unauthorized user token')
       return
     });
-}
-  console.log(userId)
+  }
+  
   const db = admin.firestore()
-  console.log('users/'+userId+'/sessions')
   let query = db.collection('users/'+userId+'/sessions');
  
   return query.get()
@@ -46,6 +46,7 @@ module.exports = async (userToken='', userId, context) => {
       snapshot.forEach(session => {
         data.push([session.id, session.data()])
       })
+      console.log(data)
       return data
     })
     .catch(err => {

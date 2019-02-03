@@ -7,7 +7,6 @@
 
 let admin = require('firebase-admin')
 let serviceAccount = {
-  
   "type": "service_account",
   "project_id": "journalagent-db480",
   "private_key_id": "42cdc093d35ca44223b3bc58c1ae378a7fb81ad5",
@@ -19,6 +18,7 @@ let serviceAccount = {
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-1g09h%40journalagent-db480.iam.gserviceaccount.com"
 }
+
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
