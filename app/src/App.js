@@ -93,9 +93,11 @@ class App extends Component {
           </li>
           <li className="nav-item">
           <NavLink className="nav-link" to="/overview">
-                <i className="menu-icon mdi mdi-content-copy"></i>
+                <i className="menu-icon mdi mdi-trending-up"></i>
                 <span className="menu-title">Weekly Overview</span>
               </NavLink>
+              </li>
+              <li className="nav-item">
           <NavLink className="nav-link" to="/journal">
               <i className="menu-icon mdi mdi-content-copy"></i>
               <span className="menu-title">Journal Entries</span>

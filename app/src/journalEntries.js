@@ -89,10 +89,10 @@ class JournalCard extends Component {
         }
         { entry.emotions //THESE ARE YOUR EMOTIONS
           ? <div>
-              <p className="entryCardDetails">Fear: {entry.emotions.fear}%</p><hr/>
-              <p className="entryCardDetails">Anger: {entry.emotions.anger}%</p><hr/>
-              <p className="entryCardDetails">Joy: {entry.emotions.joy}%</p><hr/>
-              <p className="entryCardDetails">Sadness: {entry.emotions.sadness}%</p><hr/>
+              <p className="entryCardDetails">Fear: {entry.emotions.fear}%</p>
+              <p className="entryCardDetails">Anger: {entry.emotions.anger}%</p>
+              <p className="entryCardDetails">Joy: {entry.emotions.joy}%</p>
+              <p className="entryCardDetails">Sadness: {entry.emotions.sadness}%</p>
               <p className="entryCardDetails">Surprise: {entry.emotions.surprise}%</p><hr/>
             </div>
           : ''

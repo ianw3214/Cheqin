@@ -50,12 +50,32 @@
   * Landing screens
     + Auth
     + Error
+
+    
 -------------------------------------------------------------------*/
 /*-------------------------------------------------------------------*/
 /* === Import Bootstrap functions and variables === */
 /*-------------------------------------------------------------------*/
 /* === Import template variables === */
 /*-------------------------------------------------------------------*/
+
+.entryCardDetails {
+    color: white;
+    border-radius: 18px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #65499c;
+    display: inline-block;
+    font-size: 11px;
+    margin-right: 6px;
+    font-weight: bold;
+    padding: 4px 12px;
+}
+
+.entriesList{
+  max-width: 700px;
+  margin: 0px auto;
+}
+
 /* === SCSS Compass Functions === */
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700");
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700");
