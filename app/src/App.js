@@ -12,6 +12,7 @@ import {
   import JournalEntries from "./journalEntries";
 
   import firebase from "firebase";
+  
   // Configure Firebase.
 const config = {
   apiKey: "AIzaSyAu2owEMXHV9UT7QO2oOyjNVNGSHqSfZLE",

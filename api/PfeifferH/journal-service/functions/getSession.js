@@ -15,16 +15,18 @@ admin.initializeApp({
   databaseURL: 'https://journalagent-db480.firebaseio.com'
 })
 
-module.exports = async (sessionId='', userToken, context) => {
+module.exports = async (sessionId='', userToken, userId, context) => {
   
-  let userId = ''
-  await admin.auth().verifyIdToken(userToken)
-  .then((decodedToken) => {
-    userId = decodedToken.uid;  
-  }).catch((error) => {
-    console.log('Error: Unauthorized user token')
-    return
-  });
+  if(!userId) {
+    userId = ''
+    await admin.auth().verifyIdToken(userToken)
+    .then((decodedToken) => {
+      userId = decodedToken.uid;  
+    }).catch((error) => {
+      console.log('Error: Unauthorized user token')
+      return
+    });
+  }
 
   const db = admin.firestore()
   const ref = db.collection('users/' + userId + '/sessions').doc(sessionId)
