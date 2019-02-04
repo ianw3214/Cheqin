@@ -1,6 +1,7 @@
 # JOURNAL APP
 
-Digit journal with the goal to increase the usage of self reflection as it applies to mental Wellbeing. Check it out on [Devpost](https://devpost.com/software/cheqin).
+Digital journal with the goal to increase the usage of self reflection as it applies to mental Wellbeing. Check it out on [Devpost](https://devpost.com/software/cheqin).
+
 
 This project consists of four modules:
 
